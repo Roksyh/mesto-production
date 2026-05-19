@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Место</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="./assets/index-Bn36AKWo.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-ChUIQ1pQ.css">
+  </head>
+
+  <body class="page">
+    <!-- Шапка сайта -->
+    <header class="header">
+      <button class="header__logo" type="button">Место</button>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="content">
+      <!-- Профиль пользователя -->
+      <section class="profile">
+        <div class="profile__image-wrapper">
+          <img class="profile__image" src="" alt="Аватар профиля" />
+          <div class="profile__image-overlay"></div>
+        </div>
+        <div class="profile__info">
+          <div class="profile__title-wrapper">
+            <h1 class="profile__title"></h1>
+            <button class="profile__edit-button" type="button"></button>
+          </div>
+          <p class="profile__description"></p>
+        </div>
+        <button class="profile__add-button" type="button">+</button>
+      </section>
+
+      <!-- Сетка карточек -->
+      <ul class="cards"></ul>
+    </main>
+
+    <!-- Шаблон карточки -->
+    <template id="card-template">
+      <li class="card">
+        <button class="card__delete-button" type="button"></button>
+        <img class="card__image" src="" alt="" />
+        <div class="card__info">
+          <h2 class="card__title"></h2>
+          <div class="card__like-section">
+            <button class="card__like-button" type="button"></button>
+            <span class="card__like-count">0</span>
+          </div>
+        </div>
+      </li>
+    </template>
+
+    <!-- Шаблон элемента списка статистики -->
+    <template id="popup-info-definition-template">
+      <div class="popup-info__item">
+        <dt class="popup-info__term"></dt>
+        <dd class="popup-info__description"></dd>
+      </div>
+    </template>
+
+    <!-- Шаблон плашки с именем -->
+    <template id="popup-info-user-preview-template">
+      <li class="popup-info__chip">
+        <span class="popup-info__chip-name"></span>
+      </li>
+    </template>
+
+    <!-- Попап: редактирование профиля -->
+    <div class="popup popup_type_edit" id="popup-edit-profile">
+      <div class="popup__container">
+        <button class="popup__close" type="button"></button>
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <form class="popup__form" name="edit-profile-form" novalidate>
+          <fieldset class="popup__fieldset">
+            <input
+              type="text"
+              class="popup__input popup__input_type_name"
+              id="profile-name-input"
+              name="name"
+              placeholder="Имя"
+              minlength="2"
+              maxlength="40"
+              pattern="[a-zA-Zа-яА-ЯёЁ \-]+"
+              data-error-message="Разрешены только латинские и кириллические буквы, знак дефиса и пробелы"
+              required
+            />
+            <span class="popup__error" id="profile-name-input-error"></span>
+            <input
+              type="text"
+              class="popup__input popup__input_type_description"
+              id="profile-description-input"
+              name="about"
+              placeholder="О себе"
+              minlength="2"
+              maxlength="200"
+              required
+            />
+            <span class="popup__error" id="profile-description-input-error"></span>
+          </fieldset>
+          <button
+            class="popup__button popup__button_disabled"
+            type="submit"
+            disabled
+          >
+            Сохранить
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Попап: добавление карточки -->
+    <div class="popup popup_type_new-card" id="popup-new-card">
+      <div class="popup__container">
+        <button class="popup__close" type="button"></button>
+        <h2 class="popup__title">Новое место</h2>
+        <form class="popup__form" name="new-card-form" novalidate>
+          <fieldset class="popup__fieldset">
+            <input
+              type="text"
+              class="popup__input popup__input_type_card-name"
+              id="card-name-input"
+              name="name"
+              placeholder="Название"
+              minlength="2"
+              maxlength="30"
+              pattern="[a-zA-Zа-яА-ЯёЁ \-]+"
+              data-error-message="Разрешены только латинские и кириллические буквы, знак дефиса и пробелы"
+              required
+            />
+            <span class="popup__error" id="card-name-input-error"></span>
+            <input
+              type="url"
+              class="popup__input popup__input_type_url"
+              id="card-link-input"
+              name="link"
+              placeholder="Ссылка на картинку"
+              required
+            />
+            <span class="popup__error" id="card-link-input-error"></span>
+          </fieldset>
+          <button
+            class="popup__button popup__button_disabled"
+            type="submit"
+            disabled
+          >
+            Создать
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Попап: просмотр изображения -->
+    <div class="popup popup_type_image" id="popup-image">
+      <div class="popup__container popup__container_type_image">
+        <button class="popup__close" type="button"></button>
+        <img class="popup__image" src="" alt="" />
+        <p class="popup__caption"></p>
+      </div>
+    </div>
+
+    <!-- Попап: обновление аватара -->
+    <div class="popup popup_type_avatar" id="popup-avatar">
+      <div class="popup__container">
+        <button class="popup__close" type="button"></button>
+        <h2 class="popup__title">Обновить аватар</h2>
+        <form class="popup__form" name="edit-avatar-form" novalidate>
+          <fieldset class="popup__fieldset">
+            <input
+              type="url"
+              class="popup__input popup__input_type_avatar"
+              id="avatar-input"
+              name="avatar"
+              placeholder="Ссылка на аватар"
+              required
+            />
+            <span class="popup__error" id="avatar-input-error"></span>
+          </fieldset>
+          <button
+            class="popup__button popup__button_disabled"
+            type="submit"
+            disabled
+          >
+            Сохранить
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Попап: подтверждение удаления карточки -->
+    <div class="popup popup_type_remove-card" id="popup-remove-card">
+      <div class="popup__container">
+        <button class="popup__close" type="button"></button>
+        <h2 class="popup__title">Вы уверены?</h2>
+        <form class="popup__form" name="remove-card-form" novalidate>
+          <button class="popup__button" type="submit">Да</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Попап: статистика карточек (Вариант 3) -->
+    <div class="popup popup_type_info" id="popup-info">
+      <div class="popup__container popup__container_type_info">
+        <button class="popup__close" type="button"></button>
+        <h2 class="popup__title">Статистика карточек</h2>
+        <dl class="popup-info__list" id="card-stats-list"></dl>
+        <p class="popup-info__subtitle">Популярные карточки</p>
+        <ul class="popup-info__chips" id="card-stats-chips"></ul>
+      </div>
+    </div>
+
+  </body>
+</html>
